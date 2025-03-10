@@ -20,8 +20,6 @@ from src import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('', views.index, name='home'),
-    re_path(r'^about', views.about),
-    re_path(r'^contact', views.contact),
+    path('', views.index, name='home'),
     path('registration/', include('registration.urls')),
 ]

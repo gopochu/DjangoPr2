@@ -27,13 +27,7 @@
             <a class="nav-link active" aria-current="page" href="#">Вакансии</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Компании</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Зарплаты</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Соискатели</a>
+            <a class="nav-link" href="#">Создать заявку</a>
           </li>
         </ul>
 
@@ -42,10 +36,16 @@
           <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Найти</button>
         </form>
-
-        <a href="#" class="btn btn-outline-primary me-2">Войти</a>
-        <a href="#" class="btn btn-primary">Регистрация</a>
-      </div>
+          {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-primary me-2">Выйти</button>
+            </form>
+          {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Войти</a>
+            <a href="{% url 'register' %}" class="btn btn-primary">Регистрация</a>
+          {% endif %}
+        </div>
     </div>
   </nav>
 
