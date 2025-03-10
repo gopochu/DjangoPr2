@@ -134,3 +134,11 @@ INSTALLED_APPS = [
 ]
 
 SECURE_SSL_REDIRECT = False
+LOGIN_REDIRECT_URL = '/'
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('ru', 'Russian'),
+]
+
+LANGUAGE_CODE = 'ru'  # Устанавливаем русский язык по умолчанию
