@@ -27,8 +27,10 @@
             <a class="nav-link active" aria-current="page" href="#">Вакансии</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Создать заявку</a>
-          </li>
+            {% if is_teacher %}
+              <a class="nav-link" href="{% url 'jobs:create_job' %}">Создать заявку</a>
+            {% endif %}
+          </li>     
         </ul>
 
         <!-- Дополнительные элементы справа -->

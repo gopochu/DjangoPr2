@@ -131,6 +131,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'src',
     'registration',
+    'jobs',
 ]
 
 SECURE_SSL_REDIRECT = False

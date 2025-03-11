@@ -4,30 +4,29 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="mb-4">Вакансии</h1>
+    <h1>Список вакансий</h1>
 
-    <!-- Job Card -->
-    <div class="card mb-3 job-card">
-        <div class="card-body">
-            <h5 class="card-title">Software Engineer</h5>
-            <p class="card-text">Company: TechCorp</p>
-            <p class="card-text">Location: Yekaterinburg</p>
-            <p class="card-text">Salary: 120,000 - 150,000 RUB</p>
-            <p class="card-text">Description: Looking for a skilled software engineer to join our dynamic team working with modern tech stacks.</p>
-            <a href="#" class="btn btn-primary">Apply Now</a>
+    <!-- Проверяем, есть ли вакансии -->
+    {% if jobs %}
+        <!-- Перебираем все вакансии -->
+        {% for job in jobs %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ job.title }}</h5>
+                <p class="card-text"><strong>Описание:</strong> {{ job.description }}</p>
+                <p class="card-text"><strong>Место:</strong> {{ job.location }}</p>
+                <p class="card-text"><strong>Зарплата:</strong> {{ job.salary }}</p>
+            </div>
+            {% if job.creator == user %}
+                <form action="{% url 'jobs:delete_job' job.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Удалить</button>
+                </form>
+            {% endif %}
         </div>
-    </div>
-
-    <!-- Another Job Card -->
-    <div class="card mb-3 job-card">
-        <div class="card-body">
-            <h5 class="card-title">Data Scientist</h5>
-            <p class="card-text">Company: DataLab</p>
-            <p class="card-text">Location: Moscow</p>
-            <p class="card-text">Salary: 150,000 - 180,000 RUB</p>
-            <p class="card-text">Description: We are seeking a data scientist with strong analytical skills and experience in machine learning.</p>
-            <a href="#" class="btn btn-primary">Apply Now</a>
-        </div>
-    </div>
+        {% endfor %}
+    {% else %}
+        <p>Вакансий пока нет.</p>
+    {% endif %}
 </div>
 {% endblock content %}
