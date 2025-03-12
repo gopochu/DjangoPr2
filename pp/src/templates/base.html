@@ -30,14 +30,30 @@
             {% if is_teacher %}
               <a class="nav-link" href="{% url 'jobs:create_job' %}">Создать заявку</a>
             {% endif %}
-          </li>     
+          </li>
+          <li class="nav-item">
+            {% if is_teacher %}
+              <a class="nav-link">Отклики</a>
+            {% endif %}
+          </li>
         </ul>
 
         <!-- Дополнительные элементы справа -->
-        <form class="d-flex me-2">
-          <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+        <form class="d-flex me-2" method="GET" action="{% url 'home' %}" onsubmit="return checkQuery()">
+          <input class="form-control me-2" type="text" id="searchInput" name="q" placeholder="Поиск" aria-label="Search" value="{{ request.GET.q }}">
           <button class="btn btn-outline-success" type="submit">Найти</button>
         </form>
+        <script>
+          function checkQuery() {
+            const searchInput = document.getElementById('searchInput').value.trim();
+            if (searchInput === "") {
+              // Если строка пустая, очищаем параметр 'q' и отправляем форму
+              window.location.href = "{% url 'home' %}";  // Перенаправление на главную без параметра поиска
+              return false;
+            }
+            return true;  // Отправить форму, если строка не пустая
+          }
+        </script>
           {% if user.is_authenticated %}
             <form method="POST" action="{% url 'logout' %}">
               {% csrf_token %}

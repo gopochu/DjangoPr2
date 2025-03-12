@@ -6,14 +6,20 @@ from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from .models import Job
+from django.http import JsonResponse
+from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 
 # Проверка, что пользователь является преподавателем
 def is_teacher(user):
     return user.groups.filter(name='teacher').exists()
 
 # Представление для создания вакансии
-@user_passes_test(is_teacher)
+# @user_passes_test(is_teacher)
 def create_job(request):
+    if not request.user.groups.filter(name="teacher").exists():
+        messages.error(request, "Вы не можете создавать вакансии, так как не являетесь преподавателем.")
+        return redirect('home')
     if request.method == 'POST':
         form = JobForm(request.POST)
         if form.is_valid():
@@ -21,6 +27,13 @@ def create_job(request):
             job.creator = request.user  # Устанавливаем текущего пользователя как создателя вакансии
             job.save()
             return redirect('home')  # Перенаправление после успешного создания вакансии
+        else:
+            # Возвращаем ошибки валидации
+            return JsonResponse({
+                "error": "Validation Error",
+                "message": "Некоторые параметры были переданы некорректно.",
+                "details": form.errors,
+            }, status=400)
     else:
         form = JobForm()
 

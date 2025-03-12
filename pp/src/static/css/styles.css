@@ -1,3 +1,20 @@
+ul.messages {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul.messages .message {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+ul.messages .error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f9fa; 
@@ -80,4 +97,4 @@ body {
   background-color: #0056b3;
   border-color: #0056b3;
 }
-  
+

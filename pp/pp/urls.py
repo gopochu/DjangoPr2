@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls import handler400, handler403, handler404, handler500
 from django.urls import path, re_path, include
 from src import views
 
@@ -24,3 +25,8 @@ urlpatterns = [
     path('registration/', include('registration.urls')),
     path('jobs/', include('jobs.urls')),
 ]
+
+handler400 = 'src.views.custom_bad_request'
+handler403 = 'src.views.custom_permission_denied'
+handler404 = 'src.views.custom_page_not_found'
+handler500 = 'src.views.custom_server_error'
