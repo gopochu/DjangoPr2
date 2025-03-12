@@ -20,6 +20,7 @@ def create_job(request):
     if not request.user.groups.filter(name="teacher").exists():
         messages.error(request, "Вы не можете создавать вакансии, так как не являетесь преподавателем.")
         return redirect('home')
+        
     if request.method == 'POST':
         form = JobForm(request.POST)
         if form.is_valid():
@@ -38,6 +39,7 @@ def create_job(request):
         form = JobForm()
 
     return render(request, 'jobs/create_job.html', {'form': form})
+    raise Exception("This is a test 500 error.")
 
 @user_passes_test(is_teacher)
 def delete_job(request, job_id):
