@@ -4,6 +4,7 @@ from jobs.models import Job
   
 def index(request):
     # jobs = Job.objects.all()
+    user = request.user
     query = request.GET.get('q')  # Получаем параметр поиска
     if query:
         # Фильтруем вакансии по ключевым словам
@@ -11,8 +12,15 @@ def index(request):
     else:
         # Если нет поискового запроса, показываем все вакансии
         jobs = Job.objects.all()
+    
+    if user.is_authenticated:
+        # Создаём словарь с информацией о наличии отклика для каждой вакансии
+        applications = {job.id: job.applications.filter(user=user).exists() for job in jobs}
+    else:
+        applications = {}
     is_teacher = request.user.groups.filter(name='teacher').exists()  # Проверка, является ли пользователь учителем
-    return render(request, 'index.html', {'jobs': jobs, 'is_teacher': is_teacher})
+    is_student = request.user.groups.filter(name='student').exists()  # Проверка, является ли пользователь студентом
+    return render(request, 'index.html', {'jobs': jobs, 'is_teacher': is_teacher, 'is_student': is_student, 'applications': applications,})
  
 
 # Обработчик для 400 Bad Request

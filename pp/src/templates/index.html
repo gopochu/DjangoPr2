@@ -6,13 +6,13 @@
 <div class="container mt-5">
     <h1>Список вакансий</h1>
     {% if messages %}
-        <ul>
+        <div class="alert-container">
             {% for message in messages %}
-                <li "alert alert-danger role="alert" {{ message.tags }}">
+                <div class="alert alert-{{ message.tags }}" role="alert">
                     {{ message }}
-                </li>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
     <!-- Проверяем, есть ли вакансии -->
     {% if jobs %}
@@ -23,16 +23,29 @@
                 <h5 class="card-title">{{ job.title }}</h5>
                 <p class="card-text"><strong>Описание:</strong> {{ job.description }}</p>
                 <p class="card-text"><strong>Место:</strong> {{ job.location }}</p>
-                <p class="card-text"><strong>Зарплата:</strong> {{ job.salary }}</p>
+                <p class="card-text"><strong>Зарплата:</strong> {{ job.salary }}<h>₽</h></p>
             </div>
+
+            {% if is_student %}
+                {% if not applications.job.id %}
+                    <form action="{% url 'jobs:apply_job' job.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Откликнуться</button>
+                    </form>
+                {% else %}
+                    <p>Вы уже откликнулись на эту вакансию.</p>
+                {% endif %}
+            {% endif %}
+
             {% if job.creator == user %}
                 <form action="{% url 'jobs:delete_job' job.id %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit">Удалить</button>
+                    <button type="submit" class="btn btn-danger">Удалить вакансию</button>
                 </form>
             {% endif %}
         </div>
         {% endfor %}
+
     {% else %}
         <p>Вакансий пока нет.</p>
     {% endif %}

@@ -24,7 +24,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Вакансии</a>
+            <a class="nav-link" aria-current="page" href="{% url 'home' %}">Вакансии</a>
           </li>
           <li class="nav-item">
             {% if is_teacher %}
@@ -33,7 +33,7 @@
           </li>
           <li class="nav-item">
             {% if is_teacher %}
-              <a class="nav-link">Отклики</a>
+              <a class="nav-link" href="{% url 'jobs:view_responses' %}">Отклики</a>
             {% endif %}
           </li>
         </ul>
